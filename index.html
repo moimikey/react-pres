@@ -117,16 +117,51 @@
           <h2>The Gritty</h2>
           <p>Templates? More-so hybrid components.</p>
 
-          <p>A "view" in React is a view/template hybrid, simply referred to as a "component"</p>
+          <p class="fragment fade-in">A "view" in React is a view/template hybrid, simply referred to as a "component"</p>
           <p class="fragment fade-in">Components are (isolated) state machines, driven by the components own state.</p>
           <p class="fragment fade-in">When state changes, the view (component) accomodates by only updating the part of the view whos state was mutated.</p>
-          <aside class="notes">
 
+          <aside class="notes">
+            <ol>
+              <li>If we think of every little combination of what a "view" is, we think of something hierarchical.
+                  A friends list view is a component (a parent), each individual row that represents each friend
+                  is another component (a child), each child may have an avatar (a sub-component of the child),
+                  their full name would simply be part of the child component which holds the avatar. We might even
+                  have a status indicator within that single friends row which can be a status indicator component.
+              </li>
+              <li>Every component may optionally have immutable properties and/or mutable state. When the state of a
+                  component changes an event gets bubbled up to the most top-level component within that
+                  hierarchy, announcing that a change within the tree was made. This in turn instructs React to
+                  perform its DOM diff between the virtual DOM and the real DOM, finally propagating result to
+                  real DOM by algorithmically manipulating parts of the DOM that changed.
+              </li>
+            </ol>
           </aside>
         </section>
         <section>
-          <p>You'd expect the entire view itself to re-render, but in fact, it doesn't</p>
+          <p>List of 50 friends, friend #10 decides to stop computing. (they went offline)</p>
+          <p class="fragment fade-in">Exempting React, one generally expects the parent container to remove all 50 nodes from the DOM &hellip;</p>
+          <p class="fragment fade-in">... and incrementally add all 50 nodes again, all to make friend #10's status indicator go from <span style="color:green">green</span> to <span style="color:gray;">gray</span>.</p>
+          <p></p>
+          <p class="fragment fade-in" style="color:#00d8ff;">What just happened?</p>
+          <aside class="notes">
+            <ol>
+              <li>Let's think of a normal view scenario that one would see in a multi-user type of environment. A friend list.
+                  One of my friends decides to go offline, and we need to now update that view to turn his status indicator
+                  icon from green to gray.
+              </li>
+              <li>What just happened? The DOM was mutated once, twice, three times. Expensive operations nonetheless.
+                
+              </li>
+              <li>
+                
+              </li>
+            </ol>
+          </aside>
+        </section>
+        <section>
           <!-- <p class="fragment fade-in">If we render a <code style="color:#00d8ff">&lt;a href="http://google.com">{this.state.website}&lt;/a></code> link, and <code style="color:#00d8ff">website</code> changes its state from <code style="color:#00d8ff">A</code> to <code style="color:#00d8ff">B</code>, we're not actually re-rendering the entire view that contains this element, but dynamically swapping out the DOM node who's value is equivilent to <code style="color:#00d8ff">{this.state.website}</code>.</p> -->
+          <p>React does this differently thanks to the Virtual DOM.</p>
           <p class="fragment fade-in">Our "templates" within our components are actually specially crafted markup called <code style="color:#00d8ff;">JSX</code> that creates virtual elements in a virtual DOM.</p>
           <p class="fragment fade-in">This virtual DOM then gets diffed with the real DOM to determine what has changed. This is reflected on the component automatically.</p>
         </section>
@@ -270,8 +305,11 @@
 
 
 
-
-
+<!-- 
+      <li>With this in mind, we've already deduced that React allows us to create a composable view
+          architecture that is made up of reusable components. If everything is an individual component,
+          this pre-emptively sets us up for seamlessly testing in isolation.
+      </li> -->
 
 
 

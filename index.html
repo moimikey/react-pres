@@ -57,7 +57,7 @@
 
       <section>
         <!-- 2 minutes, 8 left -->
-        <section data-background="http://upload.wikimedia.org/wikipedia/commons/2/2f/Clock_Cogs.jpg">
+        <section data-background="http://s3-ec.buzzfed.com/static/2013-10/enhanced/webdr06/29/15/anigif_enhanced-buzz-25832-1383073275-16.gif">
           <h2>The Nitty</h2>
           <p class="fragment fade-in">React is not a framework</p>
           <p class="fragment fade-in">React is fast</p>
@@ -109,17 +109,25 @@
 
       <!-- 2 minutes, 6 left -->
       <section>
+ 
         <section data-background="http://www.gonola.com/images/Grits.jpg">
           <h2>The Gritty</h2>
-          <small>Templates. Events. Data. You.</small>
+          <small>(the minor details)</small>
         </section>
+
         <section>
           <h2>The Gritty</h2>
-          <p>Templates? More-so hybrid components.</p>
+          <p>Just the "view"? More-so hybrid components.</p>
 
-          <p class="fragment fade-in">A "view" in React is a view/template hybrid, simply referred to as a "component"</p>
-          <p class="fragment fade-in">Components are (isolated) state machines, driven by the components own state.</p>
-          <p class="fragment fade-in">When state changes, the view (component) accomodates by only updating the part of the view whos state was mutated.</p>
+          <p class="fragment fade-in">
+            A "view" in React is a view/template hybrid, simply referred to as a "component"
+          </p>
+          <p class="fragment fade-in">
+            Components are (isolated) state machines, driven by the components own state.
+          </p>
+          <p class="fragment fade-in">
+            When state changes, the component re-renders itself, only mutating the DOM node that changed. Button text for example.
+          </p>
 
           <aside class="notes">
             <ol>
@@ -129,90 +137,82 @@
                   their full name would simply be part of the child component which holds the avatar. We might even
                   have a status indicator within that single friends row which can be a status indicator component.
               </li>
+              <li>
+              </li>
               <li>Every component may optionally have immutable properties and/or mutable state. When the state of a
                   component changes an event gets bubbled up to the most top-level component within that
-                  hierarchy, announcing that a change within the tree was made. This in turn instructs React to
-                  perform its DOM diff between the virtual DOM and the real DOM, finally propagating result to
-                  real DOM by algorithmically manipulating parts of the DOM that changed.
+                  hierarchy, announcing that a change within the tree was made.
+              </li>
+              <li>The state of your component, being mutable, is what drives the component to change.
               </li>
             </ol>
           </aside>
         </section>
+
         <section>
-          <p>List of 50 friends, friend #10 decides to stop computing. (they went offline)</p>
-          <p class="fragment fade-in">Exempting React, one generally expects the parent container to remove all 50 nodes from the DOM &hellip;</p>
-          <p class="fragment fade-in">... and incrementally add all 50 nodes again, all to make friend #10's status indicator go from <span style="color:green">green</span> to <span style="color:gray;">gray</span>.</p>
-          <p></p>
-          <p class="fragment fade-in" style="color:#00d8ff;">What just happened?</p>
-          <aside class="notes">
-            <ol>
-              <li>Let's think of a normal view scenario that one would see in a multi-user type of environment. A friend list.
-                  One of my friends decides to go offline, and we need to now update that view to turn his status indicator
-                  icon from green to gray.
-              </li>
-              <li>What just happened? The DOM was mutated once, twice, three times. Expensive operations nonetheless.
-                
-              </li>
-              <li>
-                
-              </li>
-            </ol>
-          </aside>
-        </section>
-        <section>
+          <h2>The Gritty</h2>
+          <p>How do you template in a component?</p>
+
           <!-- <p class="fragment fade-in">If we render a <code style="color:#00d8ff">&lt;a href="http://google.com">{this.state.website}&lt;/a></code> link, and <code style="color:#00d8ff">website</code> changes its state from <code style="color:#00d8ff">A</code> to <code style="color:#00d8ff">B</code>, we're not actually re-rendering the entire view that contains this element, but dynamically swapping out the DOM node who's value is equivilent to <code style="color:#00d8ff">{this.state.website}</code>.</p> -->
-          <p>React does this differently thanks to the Virtual DOM.</p>
-          <p class="fragment fade-in">Our "templates" within our components are actually specially crafted markup called <code style="color:#00d8ff;">JSX</code> that creates virtual elements in a virtual DOM.</p>
-          <p class="fragment fade-in">This virtual DOM then gets diffed with the real DOM to determine what has changed. This is reflected on the component automatically.</p>
+          <p class="fragment fade-in">
+            "Templates" within our components are actually specially crafted markup called <code style="color:#00d8ff;">JSX</code> that creates virtual elements in a virtual DOM.
+          </p>
+          <p class="fragment fade-in">
+            This virtual DOM then gets diffed with the real DOM to determine what has changed. This is reflected on the component automagically.
+          </p>
         </section>
+
         <section>
           <h2>The Gritty</h2>
           <p>Event Driven Communication? Not really.</p>
-        </section>
-        <section>
-          <p>
-            React instead has an event listener at the root of your app.
-            When state changes, React intelligently updates the DOM
-            accordingly.
+
+          <p class="fragment fade-in">
+            React is unidirectional, meaning data flows in a single direction. Naturally from top to bottom and back around.
           </p>
-          <p class="fragment fade-in">Data in React is meant to flow in single, looping direction.</p>
-          <p class="fragment fade-in">Events in React are fully synthetic (like the virtual dom) but conform to W3C spec.</p>
+          <p class="fragment fade-in">
+            When state changes somewhere within our components tree hierarchy, that event bubbles all
+            the way up to the top.
+          </p>
+          <p class="fragment fade-in">
+            The parent component subsequently passes down the new state as props down the tree.
+          </p>
+
           <aside class="notes">
-          event handling is accomplished through componen
-            React.initializeTouchEvents(true);
+            <ol>
+              <li>Although components are state-machines, a performant app should generally be stateless
+                  unless necessary for the purpose of interactivity. A single parent component that holds
+                  a nested hierarchy of children components, should be the sole owner of the whole components
+                  state. children of that component should pass state down as properties thereafter.
+              </li>
+            </ol>
+          </aside>
+        </section>
 
-            React also has built in Form Events as they differ from other native components as they can be mutated through user interactions.
+        <section>
+          <h2>The Gritty</h2>
+          <p>How do components function?</p>
 
-            Conforming to W3C spec, meaning that some of the HTML5 events it uses will work in IE8. We're using the browsers own event system.
+          <p class="fragment fade-in">Components have "Lifecycle" methods to denote mounting, updating, and unmounting.</p>
+          <p class="fragment fade-in">Components have attributes on them called "Props." The top most parent component will solely be in charge of these.</p>
+          <p class="fragment fade-in">Props are immutable, whereas State is mutable.</p>
+          <aside class="notes">
+            <ol>
+              <li>So when I say mounting, I'm talking about the element itself being added to the DOM, and
+                  unmounting, meaning being removed from the DOM. Updating is self explanatory.
+              </li>
+              <li>Props are generally used for key/val pairs that don't have any intention of mutating, such as
+                  unique identifiers. Since props maintain at the parent of a hierarchical component, it incidentally
+                  becomes the source of truth for the components overall state. That in mind, components turn
+                  into miniature time machines we could experimentally rewind and fast-forward user interactions
+                  in real-time.
+              </li>
+            </ol>
           </aside>
         </section>
         <section>
           <h2>The Gritty</h2>
-          <p>Data stores? They're immutable information banks.</p>
-        </section>
-        <section>
-          <p>Something</p>
-        </section>
-        <section>
-          <h2>The Gritty</h2>
-          <p>Component Hierarchy</p>
-        </section>
-        <section>
-          <p>Components have "Lifecycle" methods to denote mounting, updating, and unmounting.</p>
-          <p class="fragment fade-in">Components have properties on them called "Props." The top most parent component will solely be in charge of these.</p>
-          <p class="fragment fade-in">Props are immutable, whereas State is what changes.</p>
-          <aside class="notes">
-            Life-cycle methods are similar to Backbone/Marionette's onBeforeRender, onRender, etc.
-          </aside>
+          <p>So, how do you test it? Easily.</p>
 
-<!--           <p>
-          JavaScript is <span style="color:#00d8ff">REALLY</span> fast. It's not necessarily the amount of elements in the DOM there are, or
-          the actual execution of the JavaScript, but the mutations in the DOM. Our real bottleneck.
-          </p> -->
-        </section>
-        <section>
-          <h2>The Gritty</h2>
-          <p>Testing</p>
           <p>
           Karma with Mocha
           JEST
@@ -294,12 +294,7 @@
         </section>
       </section>
 
-      <section>
-        <section>
-          <h2>The Pretty</h2>
-        </section>
-        <section>
-      </section>
+      <section data-background="http://i.imgur.com/aYBpSlB.gif"></section>
 
 
 
@@ -312,76 +307,6 @@
       </li> -->
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				<section id="themes">
-					<h2>Themes</h2>
-					<p>
-						reveal.js comes with a few themes built in: <br>
-						<!-- Hacks to swap themes after the page has loaded. Not flexible and only intended for the reveal.js demo deck. -->
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/black.css'); return false;">Black (default)</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/white.css'); return false;">White</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/league.css'); return false;">League</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/sky.css'); return false;">Sky</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/beige.css'); return false;">Beige</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/simple.css'); return false;">Simple</a> <br>
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/serif.css'); return false;">Serif</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/night.css'); return false;">Night</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/moon.css'); return false;">Moon</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/solarized.css'); return false;">Solarized</a>
-					</p>
-				</section>
-				<section>
-					<h2>Tabular Tables</h2>
-					<table>
-						<thead>
-							<tr>
-								<th>Item</th>
-								<th>Value</th>
-								<th>Quantity</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Apples</td>
-								<td>$1</td>
-								<td>7</td>
-							<tr>
-							<tr>
-								<td>Lemonade</td>
-								<td>$2</td>
-								<td>18</td>
-							<tr>
-							<tr>
-								<td>Bread</td>
-								<td>$3</td>
-								<td>2</td>
-							<tr>
-						</tbody>
-					</table>
-				</section>
-			</div>
 
 		</div>
 
